@@ -8,7 +8,8 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 
 import controller.Clientes;
-import controller.Pedidos;
+import controller.PedidosNormais;
+import controller.PedidosUrgentes;
 import controller.Metodos;
 
 public class Principal {
@@ -16,20 +17,20 @@ public class Principal {
 	public static void main(String[] args) throws IOException, ParseException {
 
 		Clientes cliente = new Clientes();
+		PedidosNormais pedidoN = new PedidosNormais();
+		PedidosUrgentes pedidoU = new PedidosUrgentes();
+		Metodos metodos = new Metodos();
+
 		int idCliente = 0, busca;
 		String nomeCliente, telefone, CPF, email;
 
-		Pedidos pedido = new Pedidos();
-		int idPedido = 0, tipoPedido, peso, valor, valorTotal;
+		int idPedido = 0, peso, valor, valorTotal;
 		Date data;
-		String recebeData;
-		String dataColeta;
-		String dataDevolucao;
-
-		Metodos metodos = new Metodos();
+		String recebeData, dataColeta, dataDevolucao, tipoPedido;
 
 		cliente.lerClientes();
-		pedido.lerPedidos();
+		pedidoN.lerPedidos();
+		// pedidoU.lerPedidos();
 
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -62,17 +63,12 @@ public class Principal {
 		cliente.exibeUmCliente(busca);
 		// se der tempo, mostrar os pedidos atrelados ao cliente especifico
 
-		// botao para excluir cliente
-		busca = Integer.parseInt(JOptionPane.showInputDialog("Label para informar o ID do cliente que será excluido"));
-		cliente.remove(busca);
-		pedido.removeAtrelados(busca); // testar para remover todos os pedidos com mesmo idCliente atrelado
-
 		// botao adicionar pedidos - enviar o ID do respectivo cliente
 
 		idCliente = Integer.parseInt(JOptionPane.showInputDialog("Label para digitar ID do cliente"));
 
-		tipoPedido = Integer.parseInt(JOptionPane.showInputDialog(
-				"retornar se é normal ou urgente, por método - 0 para normal e 1 para urgente - um combobox para escoher, o clicado retorna 0 ou 1"));
+		tipoPedido = JOptionPane.showInputDialog(
+				"retornar se é normal ou urgente, por método - 0 para normal e 1 para urgente - um combobox para escoher, o clicado retorna 0 ou 1");
 
 		peso = Integer.parseInt(JOptionPane.showInputDialog("Label Peso"));
 
@@ -92,28 +88,29 @@ public class Principal {
 		data = formato.parse(recebeData);
 		dataDevolucao = formato.format(data);
 
-		if (tipoPedido == 0) {
-			pedido.adiciona(idPedido, idCliente, tipoPedido, peso, valorTotal, dataColeta, dataDevolucao);
+		if (tipoPedido == "") {
+			pedidoN.adicionaNormal(idPedido, idCliente, tipoPedido, peso, valorTotal, dataColeta, dataDevolucao);
 			idPedido++;
 
-		} else if (tipoPedido == 1) {
-			pedido.adicionaPrioridade(idPedido, idCliente, tipoPedido, peso, valorTotal, dataColeta, dataDevolucao);
-			idPedido++;
+			// } else if (tipoPedido == ) {
+			// pedido.adicionaPrioridade(idPedido, idCliente, tipoPedido, peso, valorTotal,
+			// dataColeta, dataDevolucao);
+			// idPedido++;
 		}
 
 		// botao que todos mostrar pedidos - mostra os dados do cliente
-		pedido.exibeTodosPedidos();
+		pedidoN.exibeTodosPedidos();
 
 		// botao motrar pedido específico - mostra os dados do cliente
 		busca = Integer.parseInt(JOptionPane.showInputDialog("Label para Infomar o ID do pedido a ser pesquisado"));
-		pedido.exibeUmPedido(busca);
+		pedidoN.exibeUmPedido(busca);
 
-		// botao excluir pedido
+		// botao cancelar pedido
 		busca = Integer.parseInt(JOptionPane.showInputDialog("Label para informar o ID do pedido que será excluido"));
-		pedido.remove(busca);
+		// pedido.remove(busca);
 
 		cliente.gravarClientes();
-		pedido.gravarPedidos();
+		pedidoN.gravarPedidosNormais();
 
 	}
 

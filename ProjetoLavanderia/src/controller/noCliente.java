@@ -1,6 +1,8 @@
 package controller;
 
-public class noCliente {
+import java.io.Serializable;
+
+public class noCliente implements Serializable {
 	private noCliente proximo;
 	private noCliente anterior;
 	private Object idCliente;

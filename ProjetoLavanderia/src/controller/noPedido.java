@@ -1,6 +1,8 @@
 package controller;
 
-public class noPedido {
+import java.io.Serializable;
+
+public class noPedido implements Serializable {
 
 	private noPedido proximo;
 	private noPedido anterior;
