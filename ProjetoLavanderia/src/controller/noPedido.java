@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class noPedido implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private noPedido proximo;
 	private noPedido anterior;
 	private Object idPedido;
@@ -13,9 +17,10 @@ public class noPedido implements Serializable {
 	private Object valorTotal;
 	private Object dataColeta;
 	private Object dataDevolucao;
+	private Object status;
 
 	public noPedido(noPedido proximo, Object idPedido, Object idCliente, Object tipoPedido, Object peso,
-			Object valorTotal, Object dataColeta, Object dataDevolucao) {
+			Object valorTotal, Object dataColeta, Object dataDevolucao, Object status) {
 		this.proximo = proximo;
 		this.idPedido = idPedido;
 		this.idCliente = idCliente;
@@ -24,10 +29,11 @@ public class noPedido implements Serializable {
 		this.valorTotal = valorTotal;
 		this.dataColeta = dataColeta;
 		this.dataDevolucao = dataDevolucao;
+		this.status = status;
 	}
 
 	public noPedido(Object idPedido, Object idCliente, Object tipoPedido, Object peso, Object valorTotal,
-			Object dataColeta, Object dataDevolucao) {
+			Object dataColeta, Object dataDevolucao, Object status) {
 		this.idPedido = idPedido;
 		this.idCliente = idCliente;
 		this.tipoPedido = tipoPedido;
@@ -35,6 +41,7 @@ public class noPedido implements Serializable {
 		this.valorTotal = valorTotal;
 		this.dataColeta = dataColeta;
 		this.dataDevolucao = dataDevolucao;
+		this.status = status;
 	}
 
 	public void setProxima(noPedido proximo) {
@@ -79,6 +86,14 @@ public class noPedido implements Serializable {
 
 	public Object getDataDevolucao() {
 		return dataDevolucao;
+	}
+	
+	public void setStatus(Object status) {
+		this.status = status;
+	}
+	
+	public Object getStatus() {
+		return status;
 	}
 
 }

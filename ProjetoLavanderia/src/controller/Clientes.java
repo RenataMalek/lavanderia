@@ -2,63 +2,42 @@ package controller;
 
 import javax.swing.JOptionPane;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
 
-public class Clientes {
+public class Clientes implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private noCliente primeira;
 	private noCliente ultima;
-	private int totalDeElementos;
+	private int totalDeElementos = 0;
 
-	public void lerClientes() throws IOException {
-//arrumar todo esse metodo
-	}
-
-	private boolean verificarPosicao(int posicao) {
+	public boolean verificarPosicao(int posicao) {
 		return posicao >= 0 && posicao < this.totalDeElementos;
 	}
 
 	private noCliente capturarNO(int posicao) {
 		if (!this.verificarPosicao(posicao)) {
-			JOptionPane.showMessageDialog(null, "Cliente não existe");
-		} else {
-			noCliente atual = primeira;
-			int aux = 0;
-			localizar(aux, atual, posicao);
-			return atual;
+			JOptionPane.showMessageDialog(null, "Cliente não cadastrado");
 		}
-		return null;
-	}
 
-	private noCliente localizar(int aux, noCliente atual, int posicao) {
-
-		if (aux == posicao) {
-			return atual;
-		} else {
+		noCliente atual = primeira;
+		for (int i = 0; i < posicao; i++) {
 			atual = atual.getProxima();
-			aux++;
-			return localizar(aux, atual, posicao);
 		}
-
+		return atual;
 	}
 
 	public void adiciona(Object idCliente, Object nomeCliente, Object CPF, Object telefone, Object email) {
 		if (this.totalDeElementos == 0) {
-			noCliente nova = new noCliente(idCliente, nomeCliente, CPF, telefone, email);
-			this.primeira = nova;
-			this.ultima = nova;
-		} else {
 			noCliente nova = new noCliente(this.primeira, idCliente, nomeCliente, CPF, telefone, email);
-			this.primeira.setAnterior(nova);
 			this.primeira = nova;
+			this.ultima = this.primeira;
+		} else {
+			noCliente nova = new noCliente(idCliente, nomeCliente, CPF, telefone, email);
+			this.ultima.setProxima(nova);
+			this.ultima = nova;
 		}
 		this.totalDeElementos++;
 	}
@@ -67,8 +46,9 @@ public class Clientes {
 		noCliente aux = primeira;
 		String mostra = "";
 		while (aux != null) {
-			mostra += "Nome: " + aux.getNomeCliente() + "\nCPF: " + aux.getCPF() + "\nTelefone " + aux.getTelefone()
-					+ "\nE-mail: " + aux.getEmail() + "\n";
+			mostra += "ID: " + aux.getIDCliente() + "\nNome: " + aux.getNomeCliente() + "\nCPF: " + aux.getCPF()
+					+ "\nTelefone: " + aux.getTelefone() + "\nE-mail: " + aux.getEmail() + "\n***************\n";
+
 			aux = aux.getProxima();
 		}
 
@@ -76,23 +56,30 @@ public class Clientes {
 	}
 
 	public void exibeUmCliente(int idCliente) {
-		if (!this.verificarPosicao(idCliente)) {
-			JOptionPane.showMessageDialog(null, "Cliente não cadastrado");
-		}
 
 		noCliente mostra = this.capturarNO(idCliente);
 
-		JOptionPane.showMessageDialog(null, "Nome: " + mostra.getNomeCliente() + "\nCPF: " + mostra.getCPF()
-				+ "\nTelefone : " + mostra.getTelefone() + "\nE-mail: " + mostra.getEmail());
+		JOptionPane.showMessageDialog(null,
+				"ID: " + mostra.getIDCliente() + "\nNome: " + mostra.getNomeCliente() + "\nCPF: " + mostra.getCPF()
+						+ "\nTelefone: " + mostra.getTelefone() + "\nE-mail: " + mostra.getEmail()
+						+ "\n***************\n");
+
 	}
 
-	@SuppressWarnings("resource")
-	public void gravarClientes() throws IOException {
-//arrumar todo esse metodo
-		FileOutputStream gravar = new FileOutputStream("arquivoCliente");
-		ObjectOutputStream cliente = new ObjectOutputStream(gravar);
+	public void editaCliente(int idCliente, Object nomeCliente, Object CPF, Object telefone, Object email) {
 
-		cliente.writeObject(getClass());
+		if (!this.verificarPosicao(idCliente)) {
+			JOptionPane.showMessageDialog(null, "Pedido não cadastrado");
+		} else {
+
+			noCliente atualiza = this.capturarNO(idCliente);
+
+			atualiza.setNomeCliente(nomeCliente);
+			atualiza.setCPF(CPF);
+			atualiza.setTelefone(telefone);
+			atualiza.setEmail(email);
+			JOptionPane.showMessageDialog(null, "Cliente Atualizado!");
+		}
 
 	}
 

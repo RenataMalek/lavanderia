@@ -1,10 +1,5 @@
 package controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class Metodos {
 
@@ -48,31 +43,4 @@ public class Metodos {
 
 	}
 
-	
-
-	public GregorianCalendar verificarDataDevolucao(int tipoPedido, String dataColeta) throws ParseException {
-
-		GregorianCalendar verData = new GregorianCalendar();
-		Date data;
-		
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy"); 
-		data = formato.parse(dataColeta);
-		
-		verData.setTime(data);
-
-		if (tipoPedido == 0) {
-			verData.add(Calendar.DATE, +3);
-			while (verData.get(Calendar.DAY_OF_WEEK) == 7 || verData.get(Calendar.DAY_OF_WEEK) == 1) {
-				verData.add(Calendar.DATE, +1);
-			}
-		} else if (tipoPedido == 1) {
-			verData.add(Calendar.DATE, +1);
-			while (verData.get(Calendar.DAY_OF_WEEK) == 7 || verData.get(Calendar.DAY_OF_WEEK) == 1) {
-				verData.add(Calendar.DATE, +1);
-			}
-		}
-
-		return verData;
-
-	}
 }

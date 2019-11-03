@@ -3,6 +3,10 @@ package controller;
 import java.io.Serializable;
 
 public class noCliente implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private noCliente proximo;
 	private noCliente anterior;
 	private Object idCliente;
@@ -11,7 +15,8 @@ public class noCliente implements Serializable {
 	private Object telefone;
 	private Object email;
 
-	public noCliente(noCliente proximo, Object idCliente, Object nomeCliente, Object CPF, Object telefone, Object email) {
+	public noCliente(noCliente proximo, Object idCliente, Object nomeCliente, Object CPF, Object telefone,
+			Object email) {
 		this.proximo = proximo;
 		this.idCliente = idCliente;
 		this.nomeCliente = nomeCliente;
@@ -48,16 +53,32 @@ public class noCliente implements Serializable {
 		return idCliente;
 	}
 
+	public void setNomeCliente(Object nomeCliente) {
+		this.nomeCliente = nomeCliente;
+	}
+
 	public Object getNomeCliente() {
 		return nomeCliente;
+	}
+
+	public void setCPF(Object CPF) {
+		this.CPF = CPF;
 	}
 
 	public Object getCPF() {
 		return CPF;
 	}
 
+	public void setTelefone(Object telefone) {
+		this.telefone = telefone;
+	}
+
 	public Object getTelefone() {
 		return telefone;
+	}
+
+	public void setEmail(Object email) {
+		this.email = email;
 	}
 
 	public Object getEmail() {
