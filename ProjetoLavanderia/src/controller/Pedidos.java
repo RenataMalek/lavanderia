@@ -94,4 +94,15 @@ public class Pedidos implements Serializable {
 		}
 
 	}
+
+	public int verificaIDPedido() {
+
+		int cont = 0;
+		noPedido verifica = ultima;
+
+		cont = (int) verifica.getIDPedido();
+		cont++;
+		return cont;
+
+	}
 }

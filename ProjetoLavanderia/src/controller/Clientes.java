@@ -82,5 +82,16 @@ public class Clientes implements Serializable {
 		}
 
 	}
+	
+	public int verificaIDCliente() {
+		
+		int cont = 0;
+		noCliente verifica = ultima;
+		
+		cont = (int) verifica.getIDCliente();
+		cont++;
+		return cont;
+			
+		}
 
 }

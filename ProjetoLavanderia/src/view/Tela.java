@@ -220,6 +220,10 @@ public class Tela extends JFrame {
 
 	public void lerArquivo() {
 
+		
+		int cont;
+		Clientes contID = new Clientes();
+		
 		try {
 
 			ObjectInputStream lerCliente = new ObjectInputStream(new FileInputStream("clientes.txt"));
@@ -230,13 +234,16 @@ public class Tela extends JFrame {
 
 			lerCliente.close();
 			lerPedido.close();
-
+			
 			JOptionPane.showMessageDialog(null, "Leitura realizada com sucesso!");
 
 		} catch (Exception erro) {
 			JOptionPane.showMessageDialog(null, "não foi possível concluir a leitura de arquivos");
 		}
 
+		idCliente  = cliente.verificaIDCliente();
+		idPedido = pedido.verificaIDPedido();
+		
 	}
 
 	public void gravarArquivo() {
