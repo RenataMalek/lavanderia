@@ -221,9 +221,6 @@ public class Tela extends JFrame {
 	public void lerArquivo() {
 
 		
-		int cont;
-		Clientes contID = new Clientes();
-		
 		try {
 
 			ObjectInputStream lerCliente = new ObjectInputStream(new FileInputStream("clientes.txt"));
@@ -281,10 +278,11 @@ public class Tela extends JFrame {
 		telefone = JOptionPane.showInputDialog("Telefone");
 		email = JOptionPane.showInputDialog("E-mail");
 
-		JOptionPane.showMessageDialog(null, "Cliente cadastrado!");
+		JOptionPane.showMessageDialog(null, "Cliente cadastrado! \nSeu ID é " + idCliente + ", guarde esse numero!!");
 
 		cliente.adiciona(idCliente, nomeCliente, CPF, telefone, email);
 		idCliente++;
+		
 
 	}
 

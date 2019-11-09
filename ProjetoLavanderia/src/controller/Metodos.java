@@ -1,10 +1,10 @@
 package controller;
 
-
 public class Metodos {
 
 	public static boolean verificarCPF(String CPF) {
 
+		try {
 		char n10, n11;
 		int soma, aux1, aux2, numero, digito;
 
@@ -37,10 +37,11 @@ public class Metodos {
 			n11 = (char) (aux2 + 48);
 
 		if ((n10 == CPF.charAt(9)) && (n11 == CPF.charAt(10)))
-			return (true);
+			return true;
 		else
-			return (false);
-
+			return false;
+		}catch (Exception e) {
+			return false;
+		}
 	}
-
 }
