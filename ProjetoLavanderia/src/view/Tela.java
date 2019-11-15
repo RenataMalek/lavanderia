@@ -6,8 +6,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.CarregarDados;
 import controller.Clientes;
-import controller.Metodos;
+import controller.GravarDados;
+import controller.validarCPF;
 import controller.Pedidos;
 
 import javax.swing.JButton;
@@ -26,7 +28,7 @@ import java.awt.Toolkit;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-public class Tela extends JFrame {
+public class Tela extends JFrame implements CarregarDados, GravarDados {
 
 	/**
 	 * 
@@ -36,7 +38,7 @@ public class Tela extends JFrame {
 
 	static Clientes cliente = new Clientes();
 	static Pedidos pedido = new Pedidos();
-	Metodos metodos = new Metodos();
+	validarCPF metodos = new validarCPF();
 
 	private static int idCliente = 0;
 	private static int idPedido = 0;
@@ -220,7 +222,6 @@ public class Tela extends JFrame {
 
 	public void lerArquivo() {
 
-		
 		try {
 
 			ObjectInputStream lerCliente = new ObjectInputStream(new FileInputStream("clientes.txt"));
@@ -231,16 +232,16 @@ public class Tela extends JFrame {
 
 			lerCliente.close();
 			lerPedido.close();
-			
+
 			JOptionPane.showMessageDialog(null, "Leitura realizada com sucesso!");
 
 		} catch (Exception erro) {
 			JOptionPane.showMessageDialog(null, "não foi possível concluir a leitura de arquivos");
 		}
 
-		idCliente  = cliente.verificaIDCliente();
+		idCliente = cliente.verificaIDCliente();
 		idPedido = pedido.verificaIDPedido();
-		
+
 	}
 
 	public void gravarArquivo() {
@@ -269,7 +270,7 @@ public class Tela extends JFrame {
 
 		nomeCliente = JOptionPane.showInputDialog("Nome: ");
 		CPF = JOptionPane.showInputDialog("CPF");
-		while (Metodos.verificarCPF(CPF) == false) {
+		while (validarCPF.verificarCPF(CPF) == false) {
 
 			JOptionPane.showMessageDialog(null, "CPF Invalido, insira novamente");
 			CPF = JOptionPane.showInputDialog("CPF");
@@ -282,7 +283,6 @@ public class Tela extends JFrame {
 
 		cliente.adiciona(idCliente, nomeCliente, CPF, telefone, email);
 		idCliente++;
-		
 
 	}
 
@@ -313,7 +313,7 @@ public class Tela extends JFrame {
 		} else {
 			nomeCliente = JOptionPane.showInputDialog("Nome");
 			CPF = JOptionPane.showInputDialog("CPF");
-			while (Metodos.verificarCPF(CPF) == false) {
+			while (validarCPF.verificarCPF(CPF) == false) {
 
 				JOptionPane.showMessageDialog(null, "CPF Invalido, insira novamente");
 				CPF = JOptionPane.showInputDialog("CPF");
@@ -329,7 +329,7 @@ public class Tela extends JFrame {
 	public void novoPedido() throws ParseException {
 
 		int opc = 0, recebeID;
-		double peso, valor, valorTotal = 0.0, acresUrg = 1.15;
+		double peso, valor, valorTotal = 0.0;
 		Date data;
 		String recebeData, dataColeta, dataDevolucao, tipoPedido = "", status = "";
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -359,11 +359,7 @@ public class Tela extends JFrame {
 
 			valor = Double.parseDouble(JOptionPane.showInputDialog("Valor cobrado por kg de peças"));
 
-			if (tipoPedido == "Normal") {
-				valorTotal = valor * peso;
-			} else {
-				valorTotal = (valor * acresUrg) * peso;
-			}
+			valorTotal = verificarValorTotal(tipoPedido, peso, valorTotal, valor);
 
 			recebeData = JOptionPane.showInputDialog("Data do pedido");
 
@@ -387,6 +383,19 @@ public class Tela extends JFrame {
 
 			idPedido++;
 		}
+	}
+
+	public double verificarValorTotal(String tipoPedido, double peso, double valorTotal, double valor) {
+
+		double acresUrg = 1.15;
+
+		if (tipoPedido == "Normal") {
+			valorTotal = valor * peso;
+		} else {
+			valorTotal = (valor * acresUrg) * peso;
+		}
+
+		return valorTotal;
 	}
 
 	public void buscarPedido() {

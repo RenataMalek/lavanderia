@@ -1,6 +1,6 @@
 package controller;
 
-public class Metodos {
+public class validarCPF {
 
 	public static boolean verificarCPF(String CPF) {
 
