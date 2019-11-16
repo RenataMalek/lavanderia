@@ -270,11 +270,13 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 
 		nomeCliente = JOptionPane.showInputDialog("Nome: ");
 		CPF = JOptionPane.showInputDialog("CPF");
-		while (validarCPF.verificarCPF(CPF) == false) {
+		
+			while (validarCPF.verificarCPF(CPF) == false) {
 
-			JOptionPane.showMessageDialog(null, "CPF Invalido, insira novamente");
-			CPF = JOptionPane.showInputDialog("CPF");
-		}
+				JOptionPane.showMessageDialog(null, "CPF Invalido, insira novamente");
+				CPF = JOptionPane.showInputDialog("CPF");
+			}
+		
 
 		telefone = JOptionPane.showInputDialog("Telefone");
 		email = JOptionPane.showInputDialog("E-mail");
@@ -370,9 +372,8 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 
 			data = formato.parse(recebeData);
 			dataDevolucao = formato.format(data);
-			
+
 			dataColeta.compareTo(dataDevolucao);
-			
 
 			status = "Ativo";
 

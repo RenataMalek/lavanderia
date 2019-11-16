@@ -8,7 +8,6 @@ public class noCliente implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private noCliente proximo;
-	private noCliente anterior;
 	private Object idCliente;
 	private Object nomeCliente;
 	private Object CPF;
@@ -41,13 +40,6 @@ public class noCliente implements Serializable {
 		return proximo;
 	}
 
-	public void setAnterior(noCliente anterior) {
-		this.anterior = anterior;
-	}
-
-	public noCliente getAnterior() {
-		return anterior;
-	}
 
 	public Object getIDCliente() {
 		return idCliente;

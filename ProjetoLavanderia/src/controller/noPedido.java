@@ -9,7 +9,6 @@ public class noPedido implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private noPedido proximo;
-	private noPedido anterior;
 	private Object idPedido;
 	private Object idCliente;
 	private Object tipoPedido;
@@ -52,13 +51,6 @@ public class noPedido implements Serializable {
 		return proximo;
 	}
 
-	public void setAnterior(noPedido anterior) {
-		this.anterior = anterior;
-	}
-
-	public noPedido getAnterior() {
-		return anterior;
-	}
 
 	public Object getIDPedido() {
 		return idPedido;
