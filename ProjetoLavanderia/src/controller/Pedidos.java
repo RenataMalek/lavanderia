@@ -47,22 +47,88 @@ public class Pedidos implements Serializable {
 	}
 
 	public void exibeTodosPedidos() {
-		noPedido aux = primeira;
 		String mostra = "";
-
-		while (aux != null) {
-
-			mostra += "ID Pedido: " + aux.getIDPedido() + "\nID Cliente: " + aux.getIDCliente() + "\nTipo de pedido: "
-					+ aux.getTipoPedido() + "\nPeso: " + aux.getPeso() + "\nValor R$: " + aux.getValorTotal()
-					+ "\nData do pedido: " + aux.getDataColeta() + "\nData de devolução: " + aux.getDataDevolucao()
-					+ "\nStatus: " + aux.getStatus() + "\n***************\n";
-			aux = aux.getProxima();
-
+		noPedido[] vetorPedidos = new noPedido[totalDeElementos];
+		
+		//--------CHAMADA DO QUICKSORT------------	
+		quickSort(carregarVetor(vetorPedidos),0,(carregarVetor(vetorPedidos).length)-1);
+		//--------CHAMADA DO QUICKSORT------------
+		
+		for(int i=vetorPedidos.length-1;i>0;i--) {
+			mostra += "ID Pedido: " + vetorPedidos[i].getIDPedido() + "\nID Cliente: " + vetorPedidos[i].getIDCliente() + "\nTipo de pedido: "
+					+ vetorPedidos[i].getTipoPedido() + "\nPeso: " + vetorPedidos[i].getPeso() + "\nValor R$: " + vetorPedidos[i].getValorTotal()
+					+ "\nData do pedido: " + vetorPedidos[i].getDataColeta() + "\nData de devolução: " + vetorPedidos[i].getDataDevolucao()
+					+ "\nStatus: " + vetorPedidos[i].getStatus() + "\n***************\n";
+			
 		}
-
+				
 		JOptionPane.showMessageDialog(null, mostra);
 	}
+	
+	public noPedido[] carregarVetor(noPedido[] vetorQuick) {
+		noPedido aux = primeira;
+		int cont = 0;
+		
+		while(aux!= null) {
+			vetorQuick[cont] = aux;
+			aux = aux.getProxima();
+			cont++;
+		}
+		return vetorQuick;
+	}
+	
+	//------------------------------------------QUICKSORT--------------------------------------------------------------------------
+	public static int quickSort (noPedido[] pedidosSeparar, int primeiro, int ultimo)
+	{		
+		int pivo=verificaStatus(pedidosSeparar,primeiro), p = primeiro+1, u = ultimo, verifAtivoInicio,verifAtivoFinal;
+		noPedido aux, inicioVetor=pedidosSeparar[primeiro];
+		
+		while (p<=u) {
+			verifAtivoInicio = verificaStatus(pedidosSeparar,p);
+			verifAtivoFinal = verificaStatus(pedidosSeparar,u);
+			
+			while (p <= ultimo && verifAtivoInicio <= pivo) { 
+				++p;
+				if(p<=pedidosSeparar.length-1) {
+					verifAtivoInicio = verificaStatus(pedidosSeparar,p);
+				}
+				
+			}
+			while (pivo < verifAtivoFinal) {
+				--u;
+				verifAtivoFinal = verificaStatus(pedidosSeparar,u);
+			}
+			if (p < u){ 
+				aux = pedidosSeparar[p];
+				pedidosSeparar[p] = pedidosSeparar[u];
+				pedidosSeparar[u] = aux; 
+				++p; 
+				--u;
+			}	
+		} 
+		if (primeiro != u){
+			pedidosSeparar[primeiro] = pedidosSeparar[u];
+			pedidosSeparar[u] = inicioVetor;
+		} 
+		return u; 
+	}
+	//------------------------------------------QUICKSORT--------------------------------------------------------------------------
+	
+	public static int verificaStatus(noPedido[] vetorOrdenar, int posicaoVetor){
+		int statusPedidoNumerico;
+		String statusPedido;
+		statusPedido = (vetorOrdenar[posicaoVetor].getStatus()).toString();
+		
+		if(statusPedido.length()==9) {
+			statusPedidoNumerico=0;
+		}
+		else {
+			statusPedidoNumerico=1;
+		}
+		return statusPedidoNumerico;	
+	}
 
+	
 	public void exibeUmPedido(int idPedido) {
 
 		if (!this.verificarPosicao(idPedido)) {

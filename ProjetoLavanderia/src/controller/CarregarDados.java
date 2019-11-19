@@ -2,6 +2,7 @@ package controller;
 
 public interface CarregarDados {
 	
-	public void lerArquivo();
+	public static void lerArquivo() {
+	}
 
 }

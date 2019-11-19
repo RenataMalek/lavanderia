@@ -47,8 +47,11 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					JOptionPane.showMessageDialog(null, "Iniciando...");
+					lerArquivo();
 					Tela frame = new Tela();
 					frame.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -151,6 +154,7 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cadastraCliente();
+
 			}
 		};
 
@@ -220,7 +224,7 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 
 	}
 
-	public void lerArquivo() {
+	public static void lerArquivo() {
 
 		try {
 
@@ -233,12 +237,11 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 			lerCliente.close();
 			lerPedido.close();
 
-			JOptionPane.showMessageDialog(null, "Leitura realizada com sucesso!");
+			JOptionPane.showMessageDialog(null, "Leitura de dados realizada com sucesso!");
 
 		} catch (Exception erro) {
-			JOptionPane.showMessageDialog(null, "não foi possível concluir a leitura de arquivos");
+			JOptionPane.showMessageDialog(null, "não foi possível concluir a leitura de dados");
 		}
-
 		idCliente = cliente.verificaIDCliente();
 		idPedido = pedido.verificaIDPedido();
 
@@ -256,10 +259,10 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 			gravarCliente.close();
 			gravarPedido.close();
 
-			JOptionPane.showMessageDialog(null, "Gravação finalizada com sucesso!");
+			JOptionPane.showMessageDialog(null, "Gravação de dados finalizada com sucesso!");
 
 		} catch (Exception erro) {
-			JOptionPane.showMessageDialog(null, "não foi possível concluir a gravação de arquivos");
+			JOptionPane.showMessageDialog(null, "não foi possível concluir a gravação de dados");
 		}
 
 	}
@@ -270,13 +273,12 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 
 		nomeCliente = JOptionPane.showInputDialog("Nome: ");
 		CPF = JOptionPane.showInputDialog("CPF");
-		
-			while (validarCPF.verificarCPF(CPF) == false) {
 
-				JOptionPane.showMessageDialog(null, "CPF Invalido, insira novamente");
-				CPF = JOptionPane.showInputDialog("CPF");
-			}
-		
+		while (validarCPF.verificarCPF(CPF) == false) {
+
+			JOptionPane.showMessageDialog(null, "CPF Invalido, insira novamente");
+			CPF = JOptionPane.showInputDialog("CPF");
+		}
 
 		telefone = JOptionPane.showInputDialog("Telefone");
 		email = JOptionPane.showInputDialog("E-mail");
