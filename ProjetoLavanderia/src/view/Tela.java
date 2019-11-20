@@ -21,8 +21,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.JLabel;
@@ -63,7 +61,7 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(
 				"C:\\Users\\Admin\\Desktop\\FATEC\\3\u00BA SEMESTRE\\Estrutura de Dados\\docs e informa\u00E7ao do projeto\\bolhas.jpg"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 391, 383);
+		setBounds(100, 100, 391, 436);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(204, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -135,6 +133,22 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 		lblCleanLavanderia.setFont(new Font("Constantia", Font.BOLD, 20));
 		lblCleanLavanderia.setBounds(103, 29, 167, 41);
 		contentPane.add(lblCleanLavanderia);
+		
+		JLabel lblNewLabel = new JLabel("Seg. a sex. - das 8h \u00E0s 18h");
+		lblNewLabel.setBounds(10, 335, 154, 14);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("S\u00E1bado - das 8h \u00E0s 12h");
+		lblNewLabel_1.setBounds(10, 362, 154, 14);
+		contentPane.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Telefone: (11) 3652-6325");
+		lblNewLabel_2.setBounds(191, 335, 150, 14);
+		contentPane.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("E-mail: sac@clean.com.br");
+		lblNewLabel_3.setBounds(191, 362, 150, 14);
+		contentPane.add(lblNewLabel_3);
 
 		ActionListener leitor = new ActionListener() {
 			@Override
@@ -271,33 +285,48 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 
 		String nomeCliente, telefone, CPF, email;
 
-		nomeCliente = JOptionPane.showInputDialog("Nome: ");
-		CPF = JOptionPane.showInputDialog("CPF");
+		try {
 
-		while (validarCPF.verificarCPF(CPF) == false) {
-
-			JOptionPane.showMessageDialog(null, "CPF Invalido, insira novamente");
+			nomeCliente = JOptionPane.showInputDialog("Nome: ");
 			CPF = JOptionPane.showInputDialog("CPF");
+
+			while (validarCPF.verificarCPF(CPF) == false) {
+
+				JOptionPane.showMessageDialog(null, "CPF Invalido, insira novamente");
+				CPF = JOptionPane.showInputDialog("CPF");
+			}
+
+			telefone = JOptionPane.showInputDialog("Telefone");
+			email = JOptionPane.showInputDialog("E-mail");
+
+			JOptionPane.showMessageDialog(null,
+					"Cliente cadastrado! \nSeu ID é " + idCliente + ", guarde esse numero!!");
+
+			cliente.adiciona(idCliente, nomeCliente, CPF, telefone, email);
+			idCliente++;
+		} catch (Exception erro) {
+
+			JOptionPane.showMessageDialog(null, "Informação inserida é invalida, tente novamente");
+
 		}
-
-		telefone = JOptionPane.showInputDialog("Telefone");
-		email = JOptionPane.showInputDialog("E-mail");
-
-		JOptionPane.showMessageDialog(null, "Cliente cadastrado! \nSeu ID é " + idCliente + ", guarde esse numero!!");
-
-		cliente.adiciona(idCliente, nomeCliente, CPF, telefone, email);
-		idCliente++;
 
 	}
 
 	public void buscarCliente() {
 
-		int busca = Integer.parseInt(JOptionPane.showInputDialog("Infomar o ID do cliente a ser pesquisado"));
+		try {
 
-		if (busca > idCliente) {
-			JOptionPane.showMessageDialog(null, "Cliente não cadastrado");
-		} else {
-			cliente.exibeUmCliente(busca);
+			int busca = Integer.parseInt(JOptionPane.showInputDialog("Infomar o ID do cliente a ser pesquisado"));
+
+			if (busca > idCliente) {
+				JOptionPane.showMessageDialog(null, "Cliente não cadastrado");
+			} else {
+				cliente.exibeUmCliente(busca);
+			}
+		} catch (Exception erro) {
+
+			JOptionPane.showMessageDialog(null, "Formato invalido, tente novamente");
+
 		}
 	}
 
@@ -310,23 +339,30 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 
 		String nomeCliente, telefone, CPF, email;
 
-		int recebeID = Integer.parseInt(JOptionPane.showInputDialog("Informe o ID do cliente"));
+		try {
 
-		if (cliente.verificarPosicao(recebeID) == false) {
-			JOptionPane.showMessageDialog(null, "Cliente não cadastrado");
-		} else {
-			nomeCliente = JOptionPane.showInputDialog("Nome");
-			CPF = JOptionPane.showInputDialog("CPF");
-			while (validarCPF.verificarCPF(CPF) == false) {
+			int recebeID = Integer.parseInt(JOptionPane.showInputDialog("Informe o ID do cliente"));
 
-				JOptionPane.showMessageDialog(null, "CPF Invalido, insira novamente");
+			if (cliente.verificarPosicao(recebeID) == false) {
+				JOptionPane.showMessageDialog(null, "Cliente não cadastrado");
+			} else {
+				nomeCliente = JOptionPane.showInputDialog("Nome");
 				CPF = JOptionPane.showInputDialog("CPF");
+				while (validarCPF.verificarCPF(CPF) == false) {
+
+					JOptionPane.showMessageDialog(null, "CPF Invalido, insira novamente");
+					CPF = JOptionPane.showInputDialog("CPF");
+				}
+
+				telefone = JOptionPane.showInputDialog("Telefone");
+				email = JOptionPane.showInputDialog("E-mail");
+
+				cliente.editaCliente(recebeID, nomeCliente, CPF, telefone, email);
 			}
+		} catch (Exception erro) {
 
-			telefone = JOptionPane.showInputDialog("Telefone");
-			email = JOptionPane.showInputDialog("E-mail");
+			JOptionPane.showMessageDialog(null, "Formato invalido, tente novamente");
 
-			cliente.editaCliente(recebeID, nomeCliente, CPF, telefone, email);
 		}
 	}
 
@@ -334,57 +370,56 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 
 		int opc = 0, recebeID;
 		double peso, valor, valorTotal = 0.0;
-		Date data;
-		String recebeData, dataColeta, dataDevolucao, tipoPedido = "", status = "";
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		String dataColeta, dataDevolucao, tipoPedido = "", status = "";
 
-		recebeID = Integer.parseInt(JOptionPane.showInputDialog("Informe o ID do cliente"));
+		try {
 
-		if (cliente.verificarPosicao(recebeID) == false) {
-			JOptionPane.showMessageDialog(null, "Cliente não cadastrado, favor cadastrar e iniciar o pedido novamente");
-		} else {
+			recebeID = Integer.parseInt(JOptionPane.showInputDialog("Informe o ID do cliente"));
 
-			while (opc != 1 & opc != 2) {
-				opc = Integer.parseInt(
-						JOptionPane.showInputDialog("Digite 1 para pedidos normais ou 2 para pedidos urgentes"));
-				switch (opc) {
-				case 1:
-					tipoPedido = "Normal";
-					break;
-				case 2:
-					tipoPedido = "Urgente";
-					break;
-				default:
-					JOptionPane.showMessageDialog(null, "Opção invalida, escolha novamente");
+			if (cliente.verificarPosicao(recebeID) == false) {
+				JOptionPane.showMessageDialog(null,
+						"Cliente não cadastrado, favor cadastrar e iniciar o pedido novamente");
+			} else {
+
+				while (opc != 1 & opc != 2) {
+					opc = Integer.parseInt(
+							JOptionPane.showInputDialog("Digite 1 para pedidos normais ou 2 para pedidos urgentes"));
+					switch (opc) {
+					case 1:
+						tipoPedido = "Normal";
+						break;
+					case 2:
+						tipoPedido = "Urgente";
+						break;
+					default:
+						JOptionPane.showMessageDialog(null, "Opção invalida, escolha novamente");
+					}
 				}
+
+				peso = Integer.parseInt(JOptionPane.showInputDialog("Peso total das peças"));
+
+				valor = Double.parseDouble(JOptionPane.showInputDialog("Valor cobrado por kg de peças"));
+
+				valorTotal = verificarValorTotal(tipoPedido, peso, valorTotal, valor);
+
+				dataColeta = JOptionPane.showInputDialog("Data do pedido");
+
+				dataDevolucao = JOptionPane.showInputDialog("Data de retirada");
+
+				status = "Ativo";
+
+				pedido.adicionaPedidos(idPedido, recebeID, tipoPedido, peso, valorTotal, dataColeta, dataDevolucao,
+						status);
+
+				JOptionPane.showMessageDialog(null, "Pedido cadastrado com sucesso!\n\nValor do pedido é de R$ "
+						+ valorTotal + "\nO ID do seu pedido é: " + idPedido);
+
+				idPedido++;
 			}
+		} catch (Exception erro) {
 
-			peso = Integer.parseInt(JOptionPane.showInputDialog("Peso total das peças"));
+			JOptionPane.showMessageDialog(null, "Informação inserida é invalida, tente novamente");
 
-			valor = Double.parseDouble(JOptionPane.showInputDialog("Valor cobrado por kg de peças"));
-
-			valorTotal = verificarValorTotal(tipoPedido, peso, valorTotal, valor);
-
-			recebeData = JOptionPane.showInputDialog("Data do pedido");
-
-			data = formato.parse(recebeData);
-			dataColeta = formato.format(data);
-
-			recebeData = JOptionPane.showInputDialog("Data de retirada");
-
-			data = formato.parse(recebeData);
-			dataDevolucao = formato.format(data);
-
-			dataColeta.compareTo(dataDevolucao);
-
-			status = "Ativo";
-
-			pedido.adicionaPedidos(idPedido, recebeID, tipoPedido, peso, valorTotal, dataColeta, dataDevolucao, status);
-
-			JOptionPane.showMessageDialog(null, "Pedido cadastrado com sucesso!\n\nValor do pedido é de R$ "
-					+ valorTotal + "\nO ID do seu pedido é: " + idPedido);
-
-			idPedido++;
 		}
 	}
 
@@ -402,9 +437,17 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 	}
 
 	public void buscarPedido() {
+
 		int busca;
-		busca = Integer.parseInt(JOptionPane.showInputDialog("Infomar o ID do pedido"));
-		pedido.exibeUmPedido(busca);
+		try {
+
+			busca = Integer.parseInt(JOptionPane.showInputDialog("Infomar o ID do pedido"));
+			pedido.exibeUmPedido(busca);
+		} catch (Exception erro) {
+
+			JOptionPane.showMessageDialog(null, "Formato invalido, tente novamente");
+
+		}
 	}
 
 	public void exibirTodosPedidos() {
@@ -415,8 +458,18 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 	public void cancelarPedido() {
 
 		int busca;
-		busca = Integer.parseInt(JOptionPane.showInputDialog("Infomar o ID do pedido"));
-		pedido.cancelarPedido(busca);
 
+		try {
+
+			busca = Integer.parseInt(JOptionPane.showInputDialog("Infomar o ID do pedido"));
+			pedido.cancelarPedido(busca);
+
+		} catch (Exception erro) {
+
+			JOptionPane.showMessageDialog(null, "Formato invalido, tente novamente");
+
+			System.exit(0);
+
+		}
 	}
 }
