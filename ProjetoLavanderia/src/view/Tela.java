@@ -468,7 +468,6 @@ public class Tela extends JFrame implements CarregarDados, GravarDados {
 
 			JOptionPane.showMessageDialog(null, "Formato invalido, tente novamente");
 
-			System.exit(0);
 
 		}
 	}
