@@ -48,13 +48,16 @@ public class Pedidos implements Serializable {
 
 	public void exibeTodosPedidos() {
 		String mostra = "";
+		String tipoOrdem="s";
 		noPedido[] vetorPedidos = new noPedido[totalDeElementos];
 		
 		//--------CHAMADA DO QUICKSORT------------	
-		quickSort(carregarVetor(vetorPedidos),0,(carregarVetor(vetorPedidos).length)-1);
+		quickSort(carregarVetor(vetorPedidos),0,(carregarVetor(vetorPedidos).length)-1,tipoOrdem);
 		//--------CHAMADA DO QUICKSORT------------
 		
-		for(int i=vetorPedidos.length-1;i>0;i--) {
+		ordenaPedido(vetorPedidos,0,vetorPedidos.length-1);
+		
+		for(int i=0;i<vetorPedidos.length;i++) {
 			mostra += "ID Pedido: " + vetorPedidos[i].getIDPedido() + "\nID Cliente: " + vetorPedidos[i].getIDCliente() + "\nTipo de pedido: "
 					+ vetorPedidos[i].getTipoPedido() + "\nPeso: " + vetorPedidos[i].getPeso() + "\nValor R$: " + vetorPedidos[i].getValorTotal()
 					+ "\nData do pedido: " + vetorPedidos[i].getDataColeta() + "\nData de devolução: " + vetorPedidos[i].getDataDevolucao()
@@ -63,6 +66,17 @@ public class Pedidos implements Serializable {
 		}
 				
 		JOptionPane.showMessageDialog(null, mostra);
+	}
+	
+	public static void ordenaPedido (noPedido vet[], int ini, int fim)
+	{
+		int divisao; 
+		String tipo="p";
+		if (ini < fim) { 
+			divisao = quickSort(vet, ini, fim,tipo); // separa a partir do primeiro
+			ordenaPedido (vet, ini, divisao-1); // ordena a primeira parte 
+			ordenaPedido (vet, divisao+1, fim); // ordena a segunda parte
+		}
 	}
 	
 	public noPedido[] carregarVetor(noPedido[] vetorQuick) {
@@ -78,25 +92,31 @@ public class Pedidos implements Serializable {
 	}
 	
 	//------------------------------------------QUICKSORT--------------------------------------------------------------------------
-	public static int quickSort (noPedido[] pedidosSeparar, int primeiro, int ultimo)
-	{		
-		int pivo=verificaStatus(pedidosSeparar,primeiro), p = primeiro+1, u = ultimo, verifAtivoInicio,verifAtivoFinal;
+	public static int quickSort (noPedido[] pedidosSeparar, int primeiro, int ultimo,String tipo)
+	{	
+		int pivo,p = primeiro+1, u = ultimo, verifAtivoInicio,verifAtivoFinal;
 		noPedido aux, inicioVetor=pedidosSeparar[primeiro];
 		
+		if(tipo=="s") {
+			pivo=verificaStatus(pedidosSeparar,primeiro,tipo);
+		}
+		else {
+			pivo=1;
+		}
+		
 		while (p<=u) {
-			verifAtivoInicio = verificaStatus(pedidosSeparar,p);
-			verifAtivoFinal = verificaStatus(pedidosSeparar,u);
+			verifAtivoInicio = verificaStatus(pedidosSeparar,p,tipo);
+			verifAtivoFinal = verificaStatus(pedidosSeparar,u,tipo);
 			
 			while (p <= ultimo && verifAtivoInicio <= pivo) { 
 				++p;
 				if(p<=pedidosSeparar.length-1) {
-					verifAtivoInicio = verificaStatus(pedidosSeparar,p);
+					verifAtivoInicio = verificaStatus(pedidosSeparar,p,tipo);
 				}
-				
 			}
 			while (pivo < verifAtivoFinal) {
 				--u;
-				verifAtivoFinal = verificaStatus(pedidosSeparar,u);
+				verifAtivoFinal = verificaStatus(pedidosSeparar,u,tipo);
 			}
 			if (p < u){ 
 				aux = pedidosSeparar[p];
@@ -114,17 +134,24 @@ public class Pedidos implements Serializable {
 	}
 	//------------------------------------------QUICKSORT--------------------------------------------------------------------------
 	
-	public static int verificaStatus(noPedido[] vetorOrdenar, int posicaoVetor){
-		int statusPedidoNumerico;
+	public static int verificaStatus(noPedido[] vetorOrdenar, int posicaoVetor,String tipoVerif){
+		int statusPedidoNumerico,numeroPedido;
 		String statusPedido;
 		statusPedido = (vetorOrdenar[posicaoVetor].getStatus()).toString();
+		numeroPedido = Integer.parseInt((vetorOrdenar[posicaoVetor].getIDPedido()).toString());
 		
-		if(statusPedido.length()==9) {
-			statusPedidoNumerico=0;
+		if(tipoVerif=="s") {
+			if(statusPedido.length()==9) {
+				statusPedidoNumerico=1;
+			}
+			else {
+				statusPedidoNumerico=0;
+			}
 		}
 		else {
-			statusPedidoNumerico=1;
+			statusPedidoNumerico = numeroPedido;
 		}
+		
 		return statusPedidoNumerico;	
 	}
 
