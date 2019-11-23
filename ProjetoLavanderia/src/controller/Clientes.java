@@ -1,7 +1,10 @@
 package controller;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
+import java.awt.Color;
 import java.io.Serializable;
 
 public class Clientes implements Serializable {
@@ -52,7 +55,16 @@ public class Clientes implements Serializable {
 			aux = aux.getProxima();
 		}
 
-		JOptionPane.showMessageDialog(null, mostra);
+		JTextArea textArea;
+		JScrollPane scrollPane;
+		textArea = new JTextArea(20, 20);
+		textArea.setText(mostra);
+		textArea.setBackground(new Color(238, 238, 238));
+
+		scrollPane = new JScrollPane(textArea);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		JOptionPane.showMessageDialog(null, scrollPane);
 	}
 
 	public void exibeUmCliente(int idCliente) {
@@ -82,16 +94,16 @@ public class Clientes implements Serializable {
 		}
 
 	}
-	
+
 	public int verificaIDCliente() {
-		
+
 		int cont = 0;
 		noCliente verifica = ultima;
-		
+
 		cont = (int) verifica.getIDCliente();
 		cont++;
 		return cont;
-			
-		}
+
+	}
 
 }
