@@ -1,7 +1,10 @@
 package controller;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
+import java.awt.Color;
 import java.io.Serializable;
 
 public class Pedidos implements Serializable {
@@ -48,14 +51,12 @@ public class Pedidos implements Serializable {
 
 	public void exibeTodosPedidos() {
 		String mostra = "";
-		String tipoOrdem="s";
 		noPedido[] vetorPedidos = new noPedido[totalDeElementos];
 		
 		//--------CHAMADA DO QUICKSORT------------	
-		quickSort(carregarVetor(vetorPedidos),0,(carregarVetor(vetorPedidos).length)-1,tipoOrdem);
+		quickSort(carregarVetor(vetorPedidos),0,(carregarVetor(vetorPedidos).length)-1);
 		//--------CHAMADA DO QUICKSORT------------
 		
-		ordenaPedido(vetorPedidos,0,vetorPedidos.length-1);
 		
 		for(int i=0;i<vetorPedidos.length;i++) {
 			mostra += "ID Pedido: " + vetorPedidos[i].getIDPedido() + "\nID Cliente: " + vetorPedidos[i].getIDCliente() + "\nTipo de pedido: "
@@ -64,20 +65,21 @@ public class Pedidos implements Serializable {
 					+ "\nStatus: " + vetorPedidos[i].getStatus() + "\n***************\n";
 			
 		}
+		
+		JTextArea textArea;
+		JScrollPane scrollPane;
+		textArea = new JTextArea(20,20);
+		textArea.setText(mostra);
+		textArea.setBackground(new Color(238,238,238));
+
+		
+		scrollPane = new JScrollPane(textArea);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
 				
-		JOptionPane.showMessageDialog(null, mostra);
+		JOptionPane.showMessageDialog(null, scrollPane);
 	}
 	
-	public static void ordenaPedido (noPedido vet[], int ini, int fim)
-	{
-		int divisao; 
-		String tipo="p";
-		if (ini < fim) { 
-			divisao = quickSort(vet, ini, fim,tipo); // separa a partir do primeiro
-			ordenaPedido (vet, ini, divisao-1); // ordena a primeira parte 
-			ordenaPedido (vet, divisao+1, fim); // ordena a segunda parte
-		}
-	}
 	
 	public noPedido[] carregarVetor(noPedido[] vetorQuick) {
 		noPedido aux = primeira;
@@ -92,31 +94,28 @@ public class Pedidos implements Serializable {
 	}
 	
 	//------------------------------------------QUICKSORT--------------------------------------------------------------------------
-	public static int quickSort (noPedido[] pedidosSeparar, int primeiro, int ultimo,String tipo)
+	public static int quickSort (noPedido[] pedidosSeparar, int primeiro, int ultimo)
 	{	
 		int pivo,p = primeiro+1, u = ultimo, verifAtivoInicio,verifAtivoFinal;
 		noPedido aux, inicioVetor=pedidosSeparar[primeiro];
 		
-		if(tipo=="s") {
-			pivo=verificaStatus(pedidosSeparar,primeiro,tipo);
-		}
-		else {
-			pivo=1;
-		}
+		
+			pivo=verificaStatus(pedidosSeparar,primeiro);
+		
 		
 		while (p<=u) {
-			verifAtivoInicio = verificaStatus(pedidosSeparar,p,tipo);
-			verifAtivoFinal = verificaStatus(pedidosSeparar,u,tipo);
+			verifAtivoInicio = verificaStatus(pedidosSeparar,p);
+			verifAtivoFinal = verificaStatus(pedidosSeparar,u);
 			
 			while (p <= ultimo && verifAtivoInicio <= pivo) { 
 				++p;
 				if(p<=pedidosSeparar.length-1) {
-					verifAtivoInicio = verificaStatus(pedidosSeparar,p,tipo);
+					verifAtivoInicio = verificaStatus(pedidosSeparar,p);
 				}
 			}
 			while (pivo < verifAtivoFinal) {
 				--u;
-				verifAtivoFinal = verificaStatus(pedidosSeparar,u,tipo);
+				verifAtivoFinal = verificaStatus(pedidosSeparar,u);
 			}
 			if (p < u){ 
 				aux = pedidosSeparar[p];
@@ -134,23 +133,18 @@ public class Pedidos implements Serializable {
 	}
 	//------------------------------------------QUICKSORT--------------------------------------------------------------------------
 	
-	public static int verificaStatus(noPedido[] vetorOrdenar, int posicaoVetor,String tipoVerif){
-		int statusPedidoNumerico,numeroPedido;
+	public static int verificaStatus(noPedido[] vetorOrdenar, int posicaoVetor){
+		int statusPedidoNumerico;
 		String statusPedido;
-		statusPedido = (vetorOrdenar[posicaoVetor].getStatus()).toString();
-		numeroPedido = Integer.parseInt((vetorOrdenar[posicaoVetor].getIDPedido()).toString());
+		statusPedido = (vetorOrdenar[posicaoVetor].getStatus()).toString();		
 		
-		if(tipoVerif=="s") {
 			if(statusPedido.length()==9) {
 				statusPedidoNumerico=1;
 			}
 			else {
 				statusPedidoNumerico=0;
 			}
-		}
-		else {
-			statusPedidoNumerico = numeroPedido;
-		}
+		
 		
 		return statusPedidoNumerico;	
 	}
